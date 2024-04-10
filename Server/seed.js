@@ -1,8 +1,6 @@
 const sequelize = require('./database');
 
-let SpellList = [];
-
-let seedQuery2 = `
+let seedQuery = `
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS favorites CASCADE;
 DROP TABLE IF EXISTS descriptions CASCADE;
@@ -49,7 +47,7 @@ CREATE TABLE users (
 
 
 const seed = () => {
-    sequelize.query(seedQuery2).then(() => {
+    sequelize.query(seedQuery).then(() => {
             console.log('DB has been seeded.')
         });
 }
