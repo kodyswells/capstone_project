@@ -3,7 +3,7 @@ const baseUrl = "https://www.dnd5eapi.co/api/";
 const spellUrl = "https://www.dnd5eapi.co";
 const axios = require('axios');
 
-let spellList = [];
+
 
 
 let seedQuery = `
@@ -98,9 +98,11 @@ CREATE TABLE users (
 module.exports = {
 
     fetchSpells: (req,res) => {
+    
         axios.get(`${baseUrl}spells`)
             .then(response => {
-                spellList = response.data;
+                //console.log(response.data)
+                spellList = response.data.results;
             })
             .then(data => {
                 console.log(spellList)
@@ -108,6 +110,24 @@ module.exports = {
             })
             .catch(error => {
                 res.status(500).send("Failed to send spells.")
+            })
+            .then(() => {
+                sequelize.query(seedQuery2).then(() => {
+                    console.log('DB has been seeded.')
+                })
+                .then(() => {
+                    let values = spellList.map(spell => {
+                        let nameEscaped = spell.name.replace(/'/g, "''");
+                        return `('${spell.index}', '${nameEscaped}', ${spell.level}, '${spell.url}')`;
+                    }).join(', ');
+                    const sql = `INSERT INTO spells (spell_index, spell_name, spell_level, spell_url) VALUES ${values};`;
+                    sequelize.query(sql).then(() => {
+                        console.log('All spells inserted succesfully')
+                    })
+                .catch((error) => {
+                    console.error('Error executing INSERT statement:', error)
+                });
+                }); 
             })
     },
     seed: () => {
