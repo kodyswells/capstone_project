@@ -5,10 +5,9 @@ const axios = require('axios');
 let seedQuery = `
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS favorites CASCADE;
-DROP TABLE IF EXISTS descriptions CASCADE;
 DROP TABLE IF EXISTS spells CASCADE;
 DROP TABLE IF EXISTS classes CASCADE;
-DROP TABLE IF EXISTS schools_of_magic CASCADE;
+
 
 
 CREATE TABLE classes (
@@ -17,28 +16,27 @@ CREATE TABLE classes (
     class_name VARCHAR(255) NOT NULL,
     hit_die INT NOT NULL,
     proficiency_choices TEXT,
-    saving_throws TEXT,
-    starting_equipment TEXT
+    saving_throws TEXT
 );
 
 CREATE TABLE spells (
     spell_id SERIAL PRIMARY KEY,
     spell_index VARCHAR(255),
-    spell_name VARCHAR(1000),
+    spell_name VARCHAR(500),
     spell_info TEXT,
     spell_higher_level TEXT,
-    spell_range VARCHAR(1000),
-    spell_components VARCHAR(1000),
-    spell_material VARCHAR(1000),
+    spell_range VARCHAR(500),
+    spell_components VARCHAR(500),
+    spell_material VARCHAR(500),
     spell_ritual BOOLEAN,
-    spell_duration VARCHAR(1000),
+    spell_duration VARCHAR(500),
     spell_concentration BOOLEAN,
-    spell_casting_time VARCHAR(1000),
-    spell_level VARCHAR(1000),
-    spell_attack_type VARCHAR(1000),
-    spell_damage_type VARCHAR(1000),
-    school_of_magic VARCHAR(1000),
-    classes VARCHAR(1000) 
+    spell_casting_time VARCHAR(500),
+    spell_level VARCHAR(500),
+    spell_attack_type VARCHAR(500),
+    spell_damage_type VARCHAR(500),
+    school_of_magic VARCHAR(500),
+    classes VARCHAR(500) 
 );
 
 CREATE TABLE favorites (
@@ -65,22 +63,22 @@ module.exports = {
                 const inserts = detailsResponses.map(detail => {
                     const spell = detail.data;
                     const values = [
-                        spell.name.replace(/'/g, "''"),
-                        spell.index.replace(/'/g, "''"),
-                        spell.desc.join(' ').replace(/'/g, "''"),
-                        spell.higher_level ? spell.higher_level.join(' ').replace(/'/g, "''") : 'N/A',
+                        spell.name.replace(/'/g, ""),
+                        spell.index.replace(/'/g, ""),
+                        spell.desc.join(' ').replace(/'/g, ""),
+                        spell.higher_level ? spell.higher_level.join(' ').replace(/'/g, "") : 'N/A',
                         spell.range.replace(/'/g, "''"),
-                        spell.components ? spell.components.join(', ').replace(/'/g, "''") : 'V, S, M',
-                        spell.material ? spell.material.replace(/'/g, "''") : 'None specified',
+                        spell.components ? spell.components.join(', ').replace(/'/g, "") : 'V, S, M',
+                        spell.material ? spell.material.replace(/'/g, "") : 'None specified',
                         spell.ritual,
-                        spell.duration.replace(/'/g, "''"),
+                        spell.duration.replace(/'/g, ""),
                         spell.concentration,
-                        spell.casting_time.replace(/'/g, "''"),
-                        spell.level.toString(),
-                        spell.attack_type ? spell.attack_type.replace(/'/g, "''") : 'None',
-                        spell.damage?.damage_type?.name ? spell.damage.damage_type.name.replace(/'/g, "''") : 'None',
-                        spell.school?.name.replace(/'/g, "''"),
-                        spell.classes.map(cls => cls.name).join(', ').replace(/'/g, "''")
+                        spell.casting_time.replace(/'/g, ""),
+                        spell.level.toString().replace(/0/,"Cantrip"),
+                        spell.attack_type ? spell.attack_type.replace(/'/g, "") : 'None',
+                        spell.damage?.damage_type?.name ? spell.damage.damage_type.name.replace(/'/g, "") : 'None',
+                        spell.school?.name.replace(/'/g, ""),
+                        spell.classes.map(cls => cls.name).join(', ').replace(/'/g, "")
                     ];
                     return sequelize.query(
                         `INSERT INTO spells (
@@ -109,23 +107,18 @@ module.exports = {
                         `${pc.choose} from ${pc.from.options.map(o => o.item ? o.item.name : 'Unknown').join(', ')}`
                     ).join('; ');
                     const savingThrows = cls.saving_throws.map(st => st.name ? st.name : 'Unknown').join(', ');
-                    const startingEquipment = cls.starting_equipment.map(se =>
-                        se.equipment ? `${se.equipment.name} x ${se.quantity}` : 'Unknown equipment'
-                    ).join(', ');
-
                     return sequelize.query(`
                         INSERT INTO classes (
                             class_index, class_name, hit_die, proficiency_choices,
-                            saving_throws, starting_equipment
-                        ) VALUES (?, ?, ?, ?, ?, ?);`,
+                            saving_throws
+                        ) VALUES (?, ?, ?, ?, ?);`,
                         {
                             replacements: [
                                 cls.index,
                                 cls.name,
                                 cls.hit_die,
                                 proficiencyChoices,
-                                savingThrows,
-                                startingEquipment
+                                savingThrows,                       
                             ],
                             type: sequelize.QueryTypes.INSERT
                         }
