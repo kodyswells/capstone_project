@@ -41,7 +41,26 @@ module.exports = {
             console.error("Query error:", err);
             res.status(500).send('Error fetching class details');
         });
-    }   
+    },
+    
+    detailedSpell : (req,res) => {
+        const spellIndex = req.params.spellIndex;
+        sequelize.query(`SELECT * FROM spells WHERE spell_index = :spell_index`, {
+            replacements: {spell_index: spellIndex},
+            type: sequelize.QueryTypes.SELECT
+        })
+        .then(result => {
+            if (result.length > 0) {
+                res.json(result[0]);
+            } else {
+                res.status(404).send('Spell not found');
+            }
+        })
+        .catch(err => {
+            console.error("Query error:", err);
+            res.status(500).send('Error fetching spell details');
+        });
+    }
 }
 
 

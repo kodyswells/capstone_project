@@ -15,9 +15,6 @@
             </h1>
         </section>
         <section id="top-section">
-            <div id="search">
-                <input type="text" placeholder="Search Spells Here"/>
-            </div>
         </section>
         <section id="bottom-section">
             <ul id="navbar">
@@ -38,8 +35,23 @@
                     </li>
             </ul>
         </section>
+
     </header>
+
+    <input type="text" id="spellSearch" placeholder="Search spells..." onkeyup="filterSpells()">
+    <div id="spellsContainer"></div>
+
+    <!-- Modal for Spell Details -->
+    <div id="spellModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="spellTitle"></h2>
+            <div id="spellDetails"></div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./spells.js"></script>
     <script src="./index.js"></script>
 </body>
 </html>

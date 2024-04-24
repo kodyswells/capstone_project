@@ -23,4 +23,15 @@ const classDisplay = () => {
             console.error('Error fetching class names:', error);
         });
 };
+
+window.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('classes-dropdown');
+    if (!dropdown.contains(e.target) && !document.getElementById('classes-btn').contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+
+
+
 const classBtn = document.getElementById('classes-btn').addEventListener('click', classDisplay) 

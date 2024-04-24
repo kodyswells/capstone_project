@@ -6,7 +6,7 @@ const sequelize = require('./database');
 const app = express();
 
 const {seed} = require('./seed');
-const {fetchSpells, fetchClasses, classIndex} = require('./controller');
+const {fetchSpells, fetchClasses, classIndex, detailedSpell} = require('./controller');
 
 
 
@@ -18,6 +18,7 @@ app.post("/api/seed", seed);
 app.get("/api/fetchSpells", fetchSpells);
 app.get("/api/fetchClasses", fetchClasses);
 app.get("/api/classes/:classIndex", classIndex);
+app.get("/api/spell/:spellIndex", detailedSpell);
 
 
 
