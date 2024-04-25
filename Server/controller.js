@@ -80,23 +80,30 @@ module.exports = {
     },
 
     deleteFavorite: (req, res) => {
-        const spellId = parseInt(req.params.spellId);
-        const query = 'DELETE FROM favorites WHERE spell_id = ? RETURNING *';
+        console.log(req.params);
+        const spellId = req.params.spellId;
+        if (!spellId) {
+            return res.status(400).send('Invalid spell ID provided');
+        }
+    
+        const query = `DELETE FROM favorites WHERE spell_id = ${spellId} RETURNING *`;
     
         sequelize.query(query, {
-            replacements: [spellId],  // Correctly pass the parameter for Sequelize
             type: sequelize.QueryTypes.DELETE
         })
         .then(result => {
-            if (result.length > 0 && result[0].length > 0) {  // Ensure there is a result
+            console.log(result)
+            console.log(result[0])
+            if (result === result) {
                 res.json({ message: "Favorite deleted", deletedFavorite: result[0][0] });
             } else {
+                console.log(result)
                 res.status(404).send('Favorite not found');
             }
         })
         .catch(e => {
             console.error("Error on delete:", e);
-            res.status(400).json({ error: e.message });
+            res.status(500).json({ error: e.message });
         });
     }
 }

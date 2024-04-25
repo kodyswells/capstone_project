@@ -76,32 +76,49 @@ function displaySpells(groupedSpells) {
     });
 }
 
-function toggleFavorite(spell) {
-    const isFavorite = spell.is_favorite; 
-    const url = isFavorite ? `http://localhost:7000/api/favorites/${spell.spell_id}` : `http://localhost:7000/api/favorites`;
-    const method = isFavorite ? 'delete' : 'post';
+function addFavorite(spell) {
+    const url = `http://localhost:7000/api/favorites`;
+    axios.post(url, { spell_id: spell.spell_id })
+        .then(response => {
+            console.log('Added to favorites:', response.data);
+            spell.is_favorite = true; // Update the state to reflect the favorite status
+            updateSpellDisplay(spell);
+            //alert(`${spell.spell_name} added to favorites!`);
+        })
+        .catch(error => {
+            console.error('Error adding spell to favorites:', error);
+        });
+}
 
-    axios({
-        method: method,
-        url: url,
-        data: isFavorite ? {} : { spell_id: spell.spell_id } // Data only needed for POST
-    })
-    .then(response => {
-        console.log(`${isFavorite ? 'Removed from' : 'Added to'} favorites:`, response.data);
-        spell.is_favorite = !isFavorite; // Toggle the state
-        updateSpellDisplay(spell);
-        alert(`${spell.spell_name} ${isFavorite ? 'removed from' : 'added to'} favorites!`);
-    })
-    .catch(error => {
-        console.error(`Error ${isFavorite ? 'removing' : 'adding'} spell to favorites:`, error);
-    });
+function removeFavorite(spell) {
+    const url = `http://localhost:7000/api/favorites/${spell.spell_id}`;
+    console.log(spell.spell_id)
+    axios.delete(url)
+        .then(response => {
+            console.log('Removed from favorites:', response.data);
+            spell.is_favorite = false; // Update the state to reflect the non-favorite status
+            updateSpellDisplay(spell);
+            //alert(`${spell.spell_name} removed from favorites!`);
+        })
+        .catch(error => {
+            console.error('Error removing spell from favorites:', error.response ? error.response.data : 'Unknown error');
+            alert(`Failed to remove ${spell.spell_name} from favorites: ${error.response ? error.response.data.message : 'Unknown error'}`);
+        });
+}
+
+function toggleFavorite(spell) {
+    if (spell.is_favorite) {
+        removeFavorite(spell);
+    } else {
+        addFavorite(spell);
+    }
 }
 
 function updateSpellDisplay(spell) {
     const spellDiv = document.querySelector(`.spell-item[data-id="${spell.spell_id}"]`);
     if (spellDiv) {
         const star = spellDiv.querySelector('.favorite-icon');
-        star.innerHTML = spell.is_favorite ? '★' : '☆';  // Update the star based on favorite status
+        star.innerHTML = spell.is_favorite ? '★' : '☆'; // Update the star based on favorite status
     }
 }
 
