@@ -1,5 +1,21 @@
 console.log("This is connected")
 
+document.addEventListener('DOMContentLoaded', function() {
+    const classesButton = document.getElementById('classes-btn');
+    const dropdown = document.getElementById('classes-dropdown');
+
+    classesButton.onclick = function() {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Optional: Close the dropdown when clicking elsewhere on the page
+    document.addEventListener('click', function(event) {
+        if (!classesButton.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+
 const classDisplay = () => {
     axios.get('http://localhost:7000/api/fetchClasses')
         .then(function(response) {
@@ -24,12 +40,6 @@ const classDisplay = () => {
         });
 };
 
-window.addEventListener('click', function(e) {
-    const dropdown = document.getElementById('classes-dropdown');
-    if (!dropdown.contains(e.target) && !document.getElementById('classes-btn').contains(e.target)) {
-        dropdown.style.display = 'none';
-    }
-});
 
 
 

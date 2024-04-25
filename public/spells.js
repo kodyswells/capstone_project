@@ -42,7 +42,7 @@ function groupAndSortSpells(spells) {
 
 function displaySpells(groupedSpells) {
     const spellsContainer = document.getElementById('spellsContainer');
-    spellsContainer.innerHTML = ''; // Clear previous entries
+    spellsContainer.innerHTML = '';  // Clear previous entries
 
     Object.keys(groupedSpells).sort().forEach(level => {
         const levelDiv = document.createElement('div');
@@ -57,6 +57,16 @@ function displaySpells(groupedSpells) {
             const spellItem = document.createElement('li');
             spellItem.className = 'spell-item';
             spellItem.textContent = spell.spell_name;
+            spellItem.setAttribute('data-id', spell.spell_id);  // Set data-id attribute for reference
+
+            const star = document.createElement('span');  // Icon for favoriting
+            star.innerHTML = spell.is_favorite ? '★' : '☆';  // Conditionally render based on favorite status
+            star.className = 'favorite-icon';
+            star.onclick = (event) => {
+                event.stopPropagation();  // Prevent triggering the spell detail view
+                toggleFavorite(spell);
+            };
+            spellItem.appendChild(star);
             spellItem.onclick = () => showSpellDetails(spell);
             spellList.appendChild(spellItem);
         });
@@ -64,6 +74,35 @@ function displaySpells(groupedSpells) {
         levelDiv.appendChild(spellList);
         spellsContainer.appendChild(levelDiv);
     });
+}
+
+function toggleFavorite(spell) {
+    const isFavorite = spell.is_favorite; 
+    const url = isFavorite ? `http://localhost:7000/api/favorites/${spell.spell_id}` : `http://localhost:7000/api/favorites`;
+    const method = isFavorite ? 'delete' : 'post';
+
+    axios({
+        method: method,
+        url: url,
+        data: isFavorite ? {} : { spell_id: spell.spell_id } // Data only needed for POST
+    })
+    .then(response => {
+        console.log(`${isFavorite ? 'Removed from' : 'Added to'} favorites:`, response.data);
+        spell.is_favorite = !isFavorite; // Toggle the state
+        updateSpellDisplay(spell);
+        alert(`${spell.spell_name} ${isFavorite ? 'removed from' : 'added to'} favorites!`);
+    })
+    .catch(error => {
+        console.error(`Error ${isFavorite ? 'removing' : 'adding'} spell to favorites:`, error);
+    });
+}
+
+function updateSpellDisplay(spell) {
+    const spellDiv = document.querySelector(`.spell-item[data-id="${spell.spell_id}"]`);
+    if (spellDiv) {
+        const star = spellDiv.querySelector('.favorite-icon');
+        star.innerHTML = spell.is_favorite ? '★' : '☆';  // Update the star based on favorite status
+    }
 }
 
 function showSpellDetails(spell) {

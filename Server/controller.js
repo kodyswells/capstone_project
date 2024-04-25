@@ -2,15 +2,21 @@ const axios = require('axios');
 const sequelize = require('./database');
 
 module.exports = {
-    fetchSpells: (req,res) => {
+    fetchSpells: (req, res) => {
         sequelize.query(`
-        SELECT * FROM spells 
-        `)
-        .then(dbRes => {
-            res.status(200).send(dbRes[0])
+            SELECT spells.*, (favorites.spell_id IS NOT NULL) AS is_favorite
+            FROM spells
+            LEFT JOIN favorites ON spells.spell_id = favorites.spell_id
+        `, {
+            type: sequelize.QueryTypes.SELECT
         })
-        .catch(err =>
-            console.log(err))
+        .then(spells => {
+            res.status(200).json(spells);
+        })
+        .catch(err => {
+            console.error("Error fetching spells with favorite status:", err);
+            res.status(500).send('Error fetching spells');
+        });
     },
     fetchClasses: (req, res) => {
         sequelize.query(`
@@ -60,10 +66,37 @@ module.exports = {
             console.error("Query error:", err);
             res.status(500).send('Error fetching spell details');
         });
+    },
+
+    postFavorite: (req, res) => {
+        const { spell_id } = req.body;
+        // Make sure to use the correct parameter passing method with Sequelize
+        sequelize.query('INSERT INTO favorites(spell_id) VALUES (:spell_id) RETURNING *', {
+            replacements: { spell_id },
+            type: sequelize.QueryTypes.INSERT
+        })
+        .then(result => res.status(201).json(result[0]))
+        .catch(e => res.status(400).json({ error: e.message }));
+    },
+
+    deleteFavorite: (req, res) => {
+        const spellId = parseInt(req.params.spellId);
+        const query = 'DELETE FROM favorites WHERE spell_id = ? RETURNING *';
+    
+        sequelize.query(query, {
+            replacements: [spellId],  // Correctly pass the parameter for Sequelize
+            type: sequelize.QueryTypes.DELETE
+        })
+        .then(result => {
+            if (result.length > 0 && result[0].length > 0) {  // Ensure there is a result
+                res.json({ message: "Favorite deleted", deletedFavorite: result[0][0] });
+            } else {
+                res.status(404).send('Favorite not found');
+            }
+        })
+        .catch(e => {
+            console.error("Error on delete:", e);
+            res.status(400).json({ error: e.message });
+        });
     }
 }
-
-
-
-
-
