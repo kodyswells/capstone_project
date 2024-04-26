@@ -105,5 +105,20 @@ module.exports = {
             console.error("Error on delete:", e);
             res.status(500).json({ error: e.message });
         });
+    },
+
+    fetchFavorites: (req, res) => {
+        sequelize.query(`
+            SELECT spells.*, favorites.favorite_id 
+            FROM spells 
+            JOIN favorites ON spells.spell_id = favorites.spell_id
+        `, { type: sequelize.QueryTypes.SELECT })
+        .then(spells => {
+            res.status(200).json(spells);
+        })
+        .catch(err => {
+            console.error("Error fetching favorite spells:", err);
+            res.status(500).send('Error fetching favorite spells');
+        });
     }
 }

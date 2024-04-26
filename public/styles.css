@@ -84,13 +84,21 @@ header {
 
 
 #spellsContainer {
+    display: flex; /* Apply flexbox to the container */
+    flex-wrap: wrap; /* Allow items to wrap as needed */
+    justify-content: flex-start; /* Align items to the start of the flex line */
     margin: 20px;
     padding: 10px;
     background: #f9f9f9;
     border: 1px solid #ddd;
 }
 
-.spell-level h2 {
+.spell-level {
+    flex: 1 1 100%; /* Each level takes full width */
+    margin-bottom: 20px; /* Spacing between each level */
+}
+
+.spell-level h3 {
     color: #333;
     padding: 8px;
     background-color: #f0f0f0;
@@ -98,13 +106,23 @@ header {
 }
 
 .spell-item {
+    display: flex; /* Apply flexbox to each spell item for better control over layout */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between the spell name and the star */
     padding: 8px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    flex: 1 1 100%; /* Take full width to stack vertically by default */
 }
 
 .spell-item:hover {
     background-color: #f4f4f4;
+}
+
+.favorite-icon {
+    cursor: pointer;
+    color: gold;
+    margin-left: 10px; /* Ensure some space between the text and the icon */
 }
 
 .modal {
@@ -127,7 +145,7 @@ header {
     width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
 }
 
 @keyframes animatetop {
@@ -260,11 +278,13 @@ header {
 }
 
 .favorite-icon {
+    font-size: 24px;
     cursor: pointer;
-    color: gold;
-    padding-left: 10px;
+    float: right;
+    margin-right: 20px;
+    color: gold; /* or any color that fits your design */
 }
 
 .favorite-icon.active {
-    color: darkred;
+    color: darkred; /* Color when activated/favorited */
 }

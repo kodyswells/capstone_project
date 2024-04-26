@@ -109,9 +109,12 @@ function removeFavorite(spell) {
 function toggleFavorite(spell) {
     if (spell.is_favorite) {
         removeFavorite(spell);
+        spell.is_favorite = false;
     } else {
         addFavorite(spell);
+        spell.is_favorite = true;
     }
+    updateSpellDisplay(spell);
 }
 
 function updateSpellDisplay(spell) {
@@ -126,19 +129,26 @@ function showSpellDetails(spell) {
     const spellModal = document.getElementById('spellModal');
     const spellTitle = document.getElementById('spellTitle');
     const spellDetails = document.getElementById('spellDetails');
+    const favoriteIcon = document.querySelector('.favorite-icon');
 
     spellTitle.textContent = spell.spell_name;
-    spellDetails.innerHTML = `<strong>Description:</strong> ${spell.spell_info}<br>
-                              <strong>Range:</strong> ${spell.spell_range}<br>
-                              <strong>Components:</strong> ${spell.spell_components}<br>
-                              ${spell.spell_material ? `<strong>Materials:</strong> ${spell.spell_material}<br>` : ''}
-                              <strong>Duration:</strong> ${spell.spell_duration}<br>
-                              <strong>Casting Time:</strong> ${spell.spell_casting_time}<br>
-                              <strong>Level:</strong> ${spell.spell_level}<br>
-                              ${spell.spell_ritual ? '<strong>Ritual:</strong> Yes<br>' : ''}
-                              ${spell.spell_concentration ? '<strong>Concentration:</strong> Yes<br>' : ''}
-                              <strong>School of Magic:</strong> ${spell.school_of_magic}<br>
-                              <strong>Classes:</strong> ${spell.classes}`;
+    spellDetails.innerHTML = `
+        <strong>Description:</strong> ${spell.spell_info}<br>
+        <strong>Range:</strong> ${spell.spell_range}<br>
+        <strong>Components:</strong> ${spell.spell_components}<br>
+        ${spell.spell_material ? `<strong>Materials:</strong> ${spell.spell_material}<br>` : ''}
+        <strong>Duration:</strong> ${spell.spell_duration}<br>
+        <strong>Casting Time:</strong> ${spell.spell_casting_time}<br>
+        <strong>Level:</strong> ${spell.spell_level}<br>
+        ${spell.spell_ritual ? '<strong>Ritual:</strong> Yes<br>' : ''}
+        ${spell.spell_concentration ? '<strong>Concentration:</strong> Yes<br>' : ''}
+        <strong>School of Magic:</strong> ${spell.school_of_magic}<br>
+        <strong>Classes:</strong> ${spell.classes}`;
+    
+    // Update the favorite icon based on whether the spell is a favorite
+    favoriteIcon.classList.toggle('active', spell.is_favorite);
+    favoriteIcon.onclick = () => toggleFavorite(spell); // Attach the toggle functionality
+
     spellModal.style.display = 'block';
 }
 

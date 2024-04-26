@@ -7,7 +7,7 @@ const sequelize = require('./database');
 const app = express();
 
 const {seed} = require('./seed');
-const {fetchSpells, fetchClasses, classIndex, detailedSpell, postFavorite, deleteFavorite} = require('./controller');
+const {fetchSpells, fetchClasses, classIndex, detailedSpell, postFavorite, deleteFavorite, fetchFavorites} = require('./controller');
 
 
 
@@ -23,6 +23,7 @@ app.get("/api/classes/:classIndex", classIndex);
 app.get("/api/spell/:spellIndex", detailedSpell);
 app.post("/api/favorites", postFavorite);
 app.delete("/api/favorites/:spellId", deleteFavorite);
+app.get("/api/favorites", fetchFavorites);
 
 
 app.listen(7000, () => console.log(`up on port 7000`));
