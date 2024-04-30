@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="styles.css">
     <title>D&D New Player Guide</title>
@@ -23,6 +26,9 @@
                     </li>
                     <li>
                         <a class ="link" id="classes-btn" >Classes</a>
+                        <div id="classes-dropdown" style="display: none;">
+                            <!-- Dropdown Content will be populated here -->
+                        </div>
                     </li>
                     <li>
                         <a class="link" href="./spells.html">Spells</a>
@@ -39,9 +45,10 @@
                 </p>
             </section>
         </header>
-        <div id="classes-dropdown" style="display: none;">
-            <!-- Dropdown Content will be populated here -->
-        </div>
+
+        <img id="home-image" src="https://images.ctfassets.net/swt2dsco9mfe/6tsR29Slg89AshLq5dmd2U/14daf5a0f02bf0e248fe8bfe75b0d103/qhxIu1bYe2ci1cwelc.jpg?q=70&w=1920" alt="">
+
+
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./index.js"></script>
 </body>

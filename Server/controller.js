@@ -80,7 +80,7 @@ module.exports = {
     },
 
     deleteFavorite: (req, res) => {
-        console.log(req.params);
+        // console.log(req.params);
         const spellId = req.params.spellId;
         if (!spellId) {
             return res.status(400).send('Invalid spell ID provided');
@@ -92,8 +92,8 @@ module.exports = {
             type: sequelize.QueryTypes.DELETE
         })
         .then(result => {
-            console.log(result)
-            console.log(result[0])
+            // console.log(result)
+            // console.log(result[0])
             if (result === result) {
                 res.json({ message: "Favorite deleted", deletedFavorite: result[0][0] });
             } else {

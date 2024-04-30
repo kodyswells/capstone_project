@@ -8,16 +8,21 @@ header {
 } */
 
 #home-header {
+    font-family: 'Libre Baskerville', serif;
     display: flex;
     font-weight: bold;
     font-size: 200%;
     align-items: center;
     align-self: center;
-    
+    width: 100%;
 }
 
+#home-image {
+    display: flex;
+    width: 100%;
+}
 
-#top-section {
+/* #top-section {
     background-color: gray;
     height: 10%;
 }
@@ -34,14 +39,14 @@ header {
     background-color: gray;
     height: 57.5%;
     width: 100%;
-}
+} */
 
-#navbar-container {
+/* #navbar-container {
     background-color: black;
     display: flex;
     justify-content: space-between;
     margin-left: 35px;
-}
+} */
 
 /* #navbar {
     background-color: black;
@@ -59,9 +64,9 @@ header {
 
 } */
 
-#search {
-    background-color: gray;
-    margin-left: 80%;
+#spellSearch {
+    margin-left: 5%;
+    margin-top: 1.5%;
 }
 
 /* #classes-dropdown {
@@ -181,7 +186,7 @@ li {
 body, h1, h2, h3, p {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Libre Baskerville', serif;
 }
 
 header {
@@ -249,18 +254,18 @@ header {
     display: inline-block;
     cursor: pointer;
     border-radius: 4px;
+    
 }
 
 #classes-dropdown {
-    
-    display: flex; /* Initial state is hidden */
-    position: relative; /* Position absolutely within the relative parent */
+    display: flex;
+    position: relative;
     background-color: #f9f9f9;
     width: 15%;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     z-index:1;
-    left: 42.5%; /* Align to the left edge of the button */
-    top: 100%; /*Position directly below the button */
+    left: 42.5%;
+    top: 100%;
 }
 
 #classes-dropdown div {
@@ -280,11 +285,7 @@ header {
 .favorite-icon {
     font-size: 24px;
     cursor: pointer;
-    float: right;
+    float: left;
     margin-right: 20px;
-    color: gold; /* or any color that fits your design */
-}
-
-.favorite-icon.active {
-    color: darkred; /* Color when activated/favorited */
+    color: gold;
 }
