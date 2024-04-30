@@ -1,11 +1,17 @@
 console.log("This is connected")
+document.getElementById('classes-dropdown').style.display = 'none';
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const classesButton = document.getElementById('classes-btn');
     const dropdown = document.getElementById('classes-dropdown');
 
     classesButton.onclick = function() {
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
     };
 
     // Optional: Close the dropdown when clicking elsewhere on the page

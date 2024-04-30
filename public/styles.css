@@ -1,11 +1,3 @@
-/* body {
-    background-color: white;
-}
-
-header {
-    background-color: gray;
-    height: 100px;
-} */
 
 #home-header {
     font-family: 'Libre Baskerville', serif;
@@ -22,61 +14,20 @@ header {
     width: 100%;
 }
 
-/* #top-section {
-    background-color: gray;
-    height: 10%;
-}
-
-#home {
-    background-color: gray;
-}
-
-#home-button {
-    background-color: white;
-}
-
-#bottom-section {
-    background-color: gray;
-    height: 57.5%;
-    width: 100%;
-} */
-
-/* #navbar-container {
-    background-color: black;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 35px;
-} */
-
-/* #navbar {
-    background-color: black;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: left;
-    align-items:center;
-}
-
-.link {
-    color:white;
-    text-decoration:none;
-    margin: 10px;
-
-} */
-
 #spellSearch {
     margin-left: 5%;
     margin-top: 1.5%;
 }
 
-/* #classes-dropdown {
+#classes-dropdown {
+    margin-left: 6.425%;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     position: absolute;
     width: 200px;
     z-index: 1;
-} */
+}
 
 .dropdown-item {
     padding: 10px;
@@ -227,7 +178,7 @@ header {
     background-color: #444;
     overflow: hidden;
     margin: 0;
-    text-align: center;
+    text-align: left;
 }
 
 #navbar li {
@@ -246,6 +197,7 @@ header {
 }
 
 #classes-btn {
+    position: relative; /* Ensure this is relative so the dropdown positions relative to it */
     background-color: #444;
     color: white;
     border: none;
@@ -254,19 +206,8 @@ header {
     display: inline-block;
     cursor: pointer;
     border-radius: 4px;
-    
 }
 
-#classes-dropdown {
-    display: flex;
-    position: relative;
-    background-color: #f9f9f9;
-    width: 15%;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    z-index:1;
-    left: 42.5%;
-    top: 100%;
-}
 
 #classes-dropdown div {
     display: flex;
